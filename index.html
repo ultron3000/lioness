@@ -23,18 +23,11 @@
 
   <main class="container mx-auto px-4 py-8">
     <div class="mb-6 flex flex-wrap gap-4 justify-center">
-      <button onclick="loadSeason('season1')" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 1</button>
-      <button onclick="loadSeason('season2')" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 2</button>
+      <button onclick="loadSeason('season1', this)" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 1</button>
+      <button onclick="loadSeason('season2', this)" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 2</button>
     </div>
     <div id="episode-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
   </main>
-
-  <div id="modal" class="hidden fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
-    <div class="bg-gray-900 p-4 rounded-lg w-full max-w-4xl relative">
-      <button onclick="closeModal()" class="absolute top-2 right-2 text-white text-2xl">&times;</button>
-      <video id="modal-video" class="w-full rounded" controls></video>
-    </div>
-  </div>
 
   <script>
     const episodes = {
@@ -60,14 +53,12 @@
       ]
     };
 
-    function isStreamLink(url) {
-      return url.endsWith('.m3u8') || url.endsWith('.txt');
-    }
-
-    function loadSeason(season) {
+    function loadSeason(season, button) {
       document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+      if (button) button.classList.add('active');
       const grid = document.getElementById('episode-grid');
       grid.innerHTML = '';
+
       episodes[season].forEach(ep => {
         const card = document.createElement('div');
         card.className = 'bg-gray-800 rounded shadow-lg overflow-hidden transition transform hover:scale-105';
@@ -75,30 +66,11 @@
           <img src="${ep.image}" alt="${ep.title}" class="w-full h-48 object-cover">
           <div class="p-4">
             <h2 class="text-lg font-semibold mb-2">${ep.title}</h2>
-            <button class="bg-blue-600 hover:bg-blue-700 w-full px-4 py-2 rounded">Watch</button>
+            <a href="player.html?video=${encodeURIComponent(ep.video)}" class="block bg-blue-600 hover:bg-blue-700 text-center px-4 py-2 rounded text-white">Watch</a>
           </div>
         `;
-        card.querySelector('button').onclick = () => {
-          if (isStreamLink(ep.video)) {
-            window.location.href = `player.html?video=${encodeURIComponent(ep.video)}`;
-          } else {
-            const modal = document.getElementById('modal');
-            const video = document.getElementById('modal-video');
-            video.src = ep.video;
-            video.poster = ep.image;
-            modal.classList.remove('hidden');
-          }
-        };
         grid.appendChild(card);
       });
-      event.target.classList.add('active');
-    }
-
-    function closeModal() {
-      const video = document.getElementById('modal-video');
-      video.pause();
-      video.src = '';
-      document.getElementById('modal').classList.add('hidden');
     }
 
     loadSeason('season1');
