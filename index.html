@@ -1,79 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Special Ops: Lioness</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #0f172a;
-      color: white;
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Poppins', 'sans-serif'],
+          },
+          colors: {
+            primary: '#9333ea',
+            dark: '#0f172a',
+            light: '#1e293b',
+          },
+        }
+      }
     }
-    .filter-btn.active {
-      background-color: #9333ea;
+  </script>
+  <style>
+    .gradient-bg {
+      background: linear-gradient(135deg, rgba(15,23,42,0.9) 0%, rgba(107,70,193,0.7) 100%);
+    }
+    .episode-card {
+      transition: all 0.3s ease;
+    }
+    .episode-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+    .season-btn {
+      transition: all 0.3s ease;
+    }
+    .season-btn.active {
+      transform: scale(1.05);
+    }
+    .hero-overlay {
+      background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+    }
+    .play-icon {
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .episode-card:hover .play-icon {
+      opacity: 1;
     }
   </style>
 </head>
-<body>
-  <header class="w-full h-72 bg-cover bg-center flex items-center justify-center" style="background-image: url('https://m.media-amazon.com/images/S/pv-target-images/9fdfe3867d0aa85c74e97220f686a8a12f803248e769241c9f6d1759a82d4a32.jpg');">
-    <h1 class="text-4xl md:text-5xl font-bold bg-black bg-opacity-50 px-8 py-3 rounded">Special Ops: Lioness</h1>
+<body class="bg-dark text-white font-sans">
+  <!-- Hero Section -->
+  <header class="relative h-[70vh] max-h-[800px] min-h-[400px] overflow-hidden">
+    <div class="absolute inset-0 hero-overlay z-10"></div>
+    <img src="https://m.media-amazon.com/images/S/pv-target-images/9fdfe3867d0aa85c74e97220f686a8a12f803248e769241c9f6d1759a82d4a32.jpg" 
+         alt="Special Ops: Lioness" 
+         class="w-full h-full object-cover object-center">
+    <div class="absolute inset-0 z-20 flex flex-col justify-center px-4 md:px-12 lg:px-24">
+      <div class="max-w-4xl space-y-6">
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight">
+          Special Ops: <span class="text-primary">Lioness</span>
+        </h1>
+        <p class="text-lg md:text-xl opacity-90 max-w-2xl">
+          A gripping military drama following the Lioness Program as it embarks on dangerous missions 
+          with a Marine recruited to befriend the daughter of a terrorist.
+        </p>
+        <div class="flex items-center space-x-4">
+          <button class="bg-primary hover:bg-purple-800 px-8 py-3 rounded-full font-medium flex items-center">
+            <i class="fas fa-play mr-2"></i> Watch Trailer
+          </button>
+          <button class="bg-white bg-opacity-10 hover:bg-opacity-20 px-6 py-3 rounded-full font-medium">
+            <i class="fas fa-info-circle mr-2"></i> More Info
+          </button>
+        </div>
+      </div>
+    </div>
   </header>
 
-  <main class="container mx-auto px-4 py-8">
-    <div class="mb-6 flex flex-wrap gap-4 justify-center">
-      <button onclick="loadSeason('season1', this)" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 1</button>
-      <button onclick="loadSeason('season2', this)" class="filter-btn bg-purple-700 hover:bg-purple-800 text-white px-5 py-2 rounded">Season 2</button>
+  <!-- Main Content -->
+  <main class="container mx-auto px-4 md:px-6 py-12">
+    <!-- Season Selection -->
+    <div class="mb-12 md:mb-16">
+      <h2 class="text-3xl md:text-4xl font-bold mb-8 flex items-center">
+        <i class="fas fa-tv text-primary mr-4"></i> Episodes
+      </h2>
+      
+      <div class="flex space-x-4 mb-8 overflow-x-auto pb-4 scrollbar-hide">
+        <button onclick="loadSeason('season1', this)" class="season-btn active bg-primary bg-opacity-20 hover:bg-opacity-30 border-2 border-primary text-white px-8 py-3 rounded-full font-medium whitespace-nowrap">
+          <i class="fas fa-star mr-2"></i> Season 1
+        </button>
+        <button onclick="loadSeason('season2', this)" class="season-btn bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-full font-medium whitespace-nowrap">
+          <i class="fas fa-star mr-2"></i> Season 2
+        </button>
+      </div>
+      
+      <!-- Episode Grid -->
+      <div id="episode-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"></div>
     </div>
-    <div id="episode-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
   </main>
+
+  <!-- Footer -->
+  <footer class="gradient-bg py-12">
+    <div class="container mx-auto px-4 md:px-6 text-center">
+      <div class="flex justify-center space-x-6 mb-8">
+        <a href="#" class="text-white hover:text-primary transition">
+          <i class="fab fa-facebook-f text-xl"></i>
+        </a>
+        <a href="#" class="text-white hover:text-primary transition">
+          <i class="fab fa-twitter text-xl"></i>
+        </a>
+        <a href="#" class="text-white hover:text-primary transition">
+          <i class="fab fa-instagram text-xl"></i>
+        </a>
+      </div>
+      <p class="text-gray-300 mb-4">© 2023 Special Ops: Lioness. All Rights Reserved.</p>
+      <div class="flex justify-center space-x-6 text-sm">
+        <a href="#" class="text-gray-300 hover:text-white transition">Privacy Policy</a>
+        <a href="#" class="text-gray-300 hover:text-white transition">Terms of Service</a>
+        <a href="#" class="text-gray-300 hover:text-white transition">Contact Us</a>
+      </div>
+    </div>
+  </footer>
 
   <script>
     const episodes = {
       season1: [
-        { title: "Episode 1 - Sacrificial Soldiers", video: "https://gS2xXAwLJjoi.cdn-centaurus.com/hls2/01/03652/uvuikjrw8gza_,n,h,x,.urlset/master.m3u8?t=du1nNZdmEij7keGP2I_SWv0KNiAUl3DxLoTrk_q8bus&s=1748540596&e=129600&f=18260540&srv=jgy4rdrj5btf&i=0.4&sp=500&p1=jgy4rdrj5btf&p2=jgy4rdrj5btf&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/b6/5a/b65a3700f99462eca3fcae4e0aa280eb/b65a3700f99462eca3fcae4e0aa280eb.jpg" },
-        { title: "Episode 2 - The Beating", video: "https://cLaqGKDCE4tc.cdn-centaurus.com/hls2/01/03651/wnhp2qpdcils_,n,h,x,.urlset/master.m3u8?t=eNIgrLYKq0-Vw2l2cBlvEhiTc0d3xZy9pIWXOV2q0Pk&s=1748540862&e=129600&f=18258295&srv=6Y0nzgZi8BCfuhZ&i=0.4&sp=500&p1=6Y0nzgZi8BCfuhZ&p2=6Y0nzgZi8BCfuhZ&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/e9/17/e917950ea5af07537224cb0d9718cd70/e917950ea5af07537224cb0d9718cd70.jpg" },
-        { title: "Episode 3 - Bruise Like a Fist", video: "https://zHIOihhF5JP4Tuz.cdn-centaurus.com/hls2/01/03651/853af2of9qg6_,n,h,.urlset/master.m3u8?t=46IhkKncCwqhg_I5aaY-ZxkMSsx7mjf2B-XLsdB_5R4&s=1748541071&e=129600&f=18258857&srv=kxbg0h85dae8&i=0.4&sp=500&p1=kxbg0h85dae8&p2=kxbg0h85dae8&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/ac/a9/aca9dfad9d8d9676281762755579b7be/aca9dfad9d8d9676281762755579b7be.jpg" },
-        { title: "Episode 4 - The Choice of Failure", video: "https://vwyn3lxe5fv5.cdn-centaurus.com/hls2/01/03651/algf7iiqa6k0_,n,h,x,.urlset/master.m3u8?t=p1N2kwlb-rFoUA-WARTHS7mYJu2XNwOI6ow-jSGriFc&s=1748541157&e=129600&f=18259724&srv=rj9uehaz0ybig4&i=0.4&sp=500&p1=rj9uehaz0ybig4&p2=rj9uehaz0ybig4&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/93/8c/938c3ed731a51e61d80eee50736ab08a/938c3ed731a51e61d80eee50736ab08a.jpg" },
-        { title: "Episode 5 - Truth Is the Shrewdest Lie", video: "https://g9hb6ahmf6ejy.cdn-centaurus.com/hls2/01/03651/o5ciw5x0wj50_,n,h,x,.urlset/master.m3u8?t=dcwpDVP60QGs-w2o82OpJFPh56MRfnyMluy7sAGvjDs&s=1748541201&e=129600&f=18259317&srv=rj9uehaz0ybig4&i=0.4&sp=500&p1=rj9uehaz0ybig4&p2=rj9uehaz0ybig4&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/b1/66/b1664faaf4d8dfdf971384dc030e76fa/b1664faaf4d8dfdf971384dc030e76fa.jpg" },
-        { title: "Episode 6 - The Lie Is the Truth", video: "https://s0mlxzpt0qgc8.cdn-centaurus.com/hls2/01/03651/d9904aa285e6_,n,h,x,.urlset/master.m3u8?t=KCMnXKCohkJqEAYmVmu1AratlaJNIHppERad7sgPaNw&s=1748541234&e=129600&f=18258297&srv=jgy4rdrj5btf&i=0.4&sp=500&p1=jgy4rdrj5btf&p2=jgy4rdrj5btf&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/54/52/545210466cb13b2832b835c1ab1dc8a6/545210466cb13b2832b835c1ab1dc8a6.jpg" },
-        { title: "Episode 7 - Wish the Fight Away", video: "https://cdn4521.lop3sdi5dq5.com:443/stream2/i-arch-400/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2llMal2TEd2dNpXQzklMRNzTUlUMOdUTw4kaNhXW6llMaRUVy4keNpXTXFVP:1748545073:89.116.30.152:361585d568061b4c840329b11fee87474c41c8779db021f8dbe3ecad59991563/./720/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/38/15/3815904b80c875423449b0063d88164c/3815904b80c875423449b0063d88164c.jpg" },
-        { title: "Episode 8 - Gone Is the Illusion of Order", video: "https://cdn4521.lop3sdi5dq5.com:443/stream2/i-arch-400/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT25keZNjWqFFeZp2ax40VJpnWqZlaPdVUw0EVWhmTExWaNpnUp5kaBVTT6lVP:1748545158:89.116.30.152:19a35de07ec30461f18519d98fd2c44ac8d73db3eb29cebddf8104babf306b01/./720/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/4b/04/4b04977db68e4df7e320b19e0e6a9dc8/4b04977db68e4df7e320b19e0e6a9dc8.jpg" }
+        { title: "Sacrificial Soldiers", episode: 1, duration: "54m", description: "Cruz Manuelos joins the Lioness program under Joe's guidance for her first undercover mission.", video: "https://gS2xXAwLJjoi.cdn-centaurus.com/hls2/01/03652/uvuikjrw8gza_,n,h,x,.urlset/master.m3u8?t=du1nNZdmEij7keGP2I_SWv0KNiAUl3DxLoTrk_q8bus&s=1748540596&e=129600&f=18260540&srv=jgy4rdrj5btf&i=0.4&sp=500&p1=jgy4rdrj5btf&p2=jgy4rdrj5btf&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/b6/5a/b65a3700f99462eca3fcae4e0aa280eb/b65a3700f99462eca3fcae4e0aa280eb.jpg" },
+        { title: "The Beating", episode: 2, duration: "48m", description: "The team works to identify their new target as Cruz struggles with the demands of the program.", video: "https://cLaqGKDCE4tc.cdn-centaurus.com/hls2/01/03651/wnhp2qpdcils_,n,h,x,.urlset/master.m3u8?t=eNIgrLYKq0-Vw2l2cBlvEhiTc0d3xZy9pIWXOV2q0Pk&s=1748540862&e=129600&f=18258295&srv=6Y0nzgZi8BCfuhZ&i=0.4&sp=500&p1=6Y0nzgZi8BCfuhZ&p2=6Y0nzgZi8BCfuhZ&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/e9/17/e917950ea5af07537224cb0d9718cd70/e917950ea5af07537224cb0d9718cd70.jpg" },
+        { title: "Bruise Like a Fist", episode: 3, duration: "52m", description: "Cruz goes deeper undercover while Joe faces personal challenges at home.", video: "https://zHIOihhF5JP4Tuz.cdn-centaurus.com/hls2/01/03651/853af2of9qg6_,n,h,.urlset/master.m3u8?t=46IhkKncCwqhg_I5aaY-ZxkMSsx7mjf2B-XLsdB_5R4&s=1748541071&e=129600&f=18258857&srv=kxbg0h85dae8&i=0.4&sp=500&p1=kxbg0h85dae8&p2=kxbg0h85dae8&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/ac/a9/aca9dfad9d8d9676281762755579b7be/aca9dfad9d8d9676281762755579b7be.jpg" },
+        { title: "The Choice of Failure", episode: 4, duration: "49m", description: "Tensions rise as the mission progresses and relationships become more complicated.", video: "https://vwyn3lxe5fv5.cdn-centaurus.com/hls2/01/03651/algf7iiqa6k0_,n,h,x,.urlset/master.m3u8?t=p1N2kwlb-rFoUA-WARTHS7mYJu2XNwOI6ow-jSGriFc&s=1748541157&e=129600&f=18259724&srv=rj9uehaz0ybig4&i=0.4&sp=500&p1=rj9uehaz0ybig4&p2=rj9uehaz0ybig4&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/93/8c/938c3ed731a51e61d80eee50736ab08a/938c3ed731a51e61d80eee50736ab08a.jpg" },
+        { title: "Truth Is the Shrewdest Lie", episode: 5, duration: "51m", description: "The team faces new challenges as the operation takes an unexpected turn.", video: "https://g9hb6ahmf6ejy.cdn-centaurus.com/hls2/01/03651/o5ciw5x0wj50_,n,h,x,.urlset/master.m3u8?t=dcwpDVP60QGs-w2o82OpJFPh56MRfnyMluy7sAGvjDs&s=1748541201&e=129600&f=18259317&srv=rj9uehaz0ybig4&i=0.4&sp=500&p1=rj9uehaz0ybig4&p2=rj9uehaz0ybig4&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/b1/66/b1664faaf4d8dfdf971384dc030e76fa/b1664faaf4d8dfdf971384dc030e76fa.jpg" },
+        { title: "The Lie Is the Truth", episode: 6, duration: "53m", description: "Loyalties are tested as the operation reaches a critical point.", video: "https://s0mlxzpt0qgc8.cdn-centaurus.com/hls2/01/03651/d9904aa285e6_,n,h,x,.urlset/master.m3u8?t=KCMnXKCohkJqEAYmVmu1AratlaJNIHppERad7sgPaNw&s=1748541234&e=129600&f=18258297&srv=jgy4rdrj5btf&i=0.4&sp=500&p1=jgy4rdrj5btf&p2=jgy4rdrj5btf&asn=24554", image: "https://f.woowoowoowoo.net/resize/300x200/54/52/545210466cb13b2832b835c1ab1dc8a6/545210466cb13b2832b835c1ab1dc8a6.jpg" },
+        { title: "Wish the Fight Away", episode: 7, duration: "56m", description: "The stakes escalate as the team prepares for the final phase of the operation.", video: "https://cdn4521.lop3sdi5dq5.com:443/stream2/i-arch-400/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2llMal2TEd2dNpXQzklMRNzTUlUMOdUTw4kaNhXW6llMaRUVy4keNpXTXFVP:1748545073:89.116.30.152:361585d568061b4c840329b11fee87474c41c8779db021f8dbe3ecad59991563/./720/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/38/15/3815904b80c875423449b0063d88164c/3815904b80c875423449b0063d88164c.jpg" },
+        { title: "Gone Is the Illusion of Order", episode: 8, duration: "62m", description: "The explosive season finale where all secrets are revealed and sacrifices made.", video: "https://cdn4521.lop3sdi5dq5.com:443/stream2/i-arch-400/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT25keZNjWqFFeZp2ax40VJpnWqZlaPdVUw0EVWhmTExWaNpnUp5kaBVTT6lVP:1748545158:89.116.30.152:19a35de07ec30461f18519d98fd2c44ac8d73db3eb29cebddf8104babf306b01/./720/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/4b/04/4b04977db68e4df7e320b19e0e6a9dc8/4b04977db68e4df7e320b19e0e6a9dc8.jpg" }
       ],
       season2: [
-        { title: "Episode 1 - Beware the Old Soldier", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT290VJVTTyUFNZJTWy8EVNBjWqN2dNpXQ550VZhXWqpEbPdUVy0kaWxWW6NWP:1748545222:89.116.30.152:ac97e01d7a2ef4e7f0a4dee66a980062b4160122d7afcf072c5873e122128b31/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/12/3d/123d5ecfa139860c69883a00c7c4d2a5/123d5ecfa139860c69883a00c7c4d2a5.jpg" },
-        { title: "Episode 2 - I Love My Country", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT290RNpXTyIlaORlQo50ROt2TUVUeOdUSxkFVBNzTUJUbaRURy40RJNzTXlUP:1748545259:89.116.30.152:686e07743368b7cf5a036ee2a7a1b1340d39eb082442d8c8f22c6bf8691dbfa5/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/e7/f6/e7f6c479ca7367da6214086d6e2b2490/e7f6c479ca7367da6214086d6e2b2490.jpg" },
-        { title: "Episode 3 - Along Came a Spider", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lFVjlnWHlVNPRVS6planJjWExWbOdUVyoFVGtmWqNWeO1mUo9EVJlXTXFVP:1748545300:89.116.30.152:b729a826decf1ca92924cd1bdc3eaaf4c826ba5080cacc5482f078bb76185028/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/8f/7d/8f7db02e88f345897d4026c6f13931b9/8f7db02e88f345897d4026c6f13931b9.jpg" },
-        { title: "Episode 4 - Five Hundred Children", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lleJFzTEFUNZ1WW5pFRrdXTExmaOp3Y6llajVTWqpVaNpmQr5EVNlXWUdWP:1748545457:89.116.30.152:c0f78cce77fbe72646223946bf81af1d0ce8a802eaccd46cd9049d3dafbdfbb2/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/dd/e1/dde18fdad79a426e0fbf3d55fbc47f59/dde18fdad79a426e0fbf3d55fbc47f59.jpg" },
-        { title: "Episode 5 - Shatter the Moon", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT250VS1WWXZUaNRlUo50RNFjTEJEaNp3Z49EVBhnTXpVbOpWT6lVbGtmTHlVP:1748545488:89.116.30.152:ae4592bdeca784114a2c31dd98a03c9f75ae42618424ca2469a7e23cccb3e297/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/9d/4b/9d4be54d546cf158fdd335471d3851d2/9d4be54d546cf158fdd335471d3851d2.jpg" },
-        { title: "Episode 6 - 2381", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT29ERKtWTqlEMa1WT04EVk1mWEFkeOpWTy0EVax2TElENZpWR3p1VZVjTUdWP:1748545552:89.116.30.152:4872fb6f5525dc84c5d61b09fc3db8406e04e258987378a6469e0afe8500d3c6/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/89/56/8956e67bd4fda019095657e8f531c27e/8956e67bd4fda019095657e8f531c27e.jpg" },
-        { title: "Episode 7 - The Devil Has Aces", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT21ERO1mWqFFMNJjSo9EVndnTH5UbNRVWy0keNJTTqFVeNJjUp5UbalmWXVVP:1748545595:89.116.30.152:f24efae77fa0477b9110168fab9163471390fc0c78f40bafb4d198931d7b9381/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/bb/c3/bbc3a6ea1d28b368d8155ac26708ff43/bbc3a6ea1d28b368d8155ac26708ff43.jpg" },
-        { title: "Episode 8 - The Compass Points Home", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lFVWlWTHZlaNpmWs5UbKpmTHZVbPdVTw40VWxmTqVleOpGZq5kMKlWTqNWP:1748545630:89.116.30.152:271d24d94e41ef5d73909a39c966b19a99f85243e8ea0bce4ec7839064937585/./1080/index.m3u8", image: "https://resizing.flixster.com/4HnNwmDcl6IPSvrEZRgJfeB3nis=/270x160/v2/https://statcdn.fandango.com/MPX/image/NBCU_Fandango/89/886/thumb_2F508CE6-EF23-49C3-8D79-00F619D189EC.jpg" }
+        { title: "Beware the Old Soldier", episode: 1, duration: "58m", description: "The Lioness team returns with a new mission and new challenges to overcome.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT290VJVTTyUFNZJTWy8EVNBjWqN2dNpXQ550VZhXWqpEbPdUVy0kaWxWW6NWP:1748545222:89.116.30.152:ac97e01d7a2ef4e7f0a4dee66a980062b4160122d7afcf072c5873e122128b31/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/12/3d/123d5ecfa139860c69883a00c7c4d2a5/123d5ecfa139860c69883a00c7c4d2a5.jpg" },
+        { title: "I Love My Country", episode: 2, duration: "52m", description: "New alliances form as the team goes deeper undercover in dangerous territory.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT290RNpXTyIlaORlQo50ROt2TUVUeOdUSxkFVBNzTUJUbaRURy40RJNzTXlUP:1748545259:89.116.30.152:686e07743368b7cf5a036ee2a7a1b1340d39eb082442d8c8f22c6bf8691dbfa5/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/e7/f6/e7f6c479ca7367da6214086d6e2b2490/e7f6c479ca7367da6214086d6e2b2490.jpg" },
+        { title: "Along Came a Spider", episode: 3, duration: "55m", description: "A mysterious figure from Joe's past threatens the entire operation.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lFVjlnWHlVNPRVS6planJjWExWbOdUVyoFVGtmWqNWeO1mUo9EVJlXTXFVP:1748545300:89.116.30.152:b729a826decf1ca92924cd1bdc3eaaf4c826ba5080cacc5482f078bb76185028/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/8f/7d/8f7db02e88f345897d4026c6f13931b9/8f7db02e88f345897d4026c6f13931b9.jpg" },
+        { title: "Five Hundred Children", episode: 4, duration: "59m", description: "The mission takes an emotional turn when innocent lives are put in danger.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lleJFzTEFUNZ1WW5pFRrdXTExmaOp3Y6llajVTWqpVaNpmQr5EVNlXWUdVP:1748545457:89.116.30.152:c0f78cce77fbe72646223946bf81af1d0ce8a802eaccd46cd9049d3dafbdfbb2/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/dd/e1/dde18fdad79a426e0fbf3d55fbc47f59/dde18fdad79a426e0fbf3d55fbc47f59.jpg" },
+        { title: "Shatter the Moon", episode: 5, duration: "57m", description: "Plans go awry when a key team member's cover is nearly blown.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT250VS1WWXZUaNRlUo50RNFjTEJEaNp3Z49EVBhnTXpVbOpWT6lVbGtmTHlVP:1748545488:89.116.30.152:ae4592bdeca784114a2c31dd98a03c9f75ae42618424ca2469a7e23cccb3e297/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/9d/4b/9d4be54d546cf158fdd335471d3851d2/9d4be54d546cf158fdd335471d3851d2.jpg" },
+        { title: "2381", episode: 6, duration: "53m", description: "A shocking betrayal puts the entire Lioness program at risk.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT29ERKtWTqlEMa1WT04EVk1mWEFkeOpWTy0EVax2TElENZpWR3p1VZVjTUdUP:1748545552:89.116.30.152:4872fb6f5525dc84c5d61b09fc3db8406e04e258987378a6469e0afe8500d3c6/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/89/56/8956e67bd4fda019095657e8f531c27e/8956e67bd4fda019095657e8f531c27e.jpg" },
+        { title: "The Devil Has Aces", episode: 7, duration: "60m", description: "With time running out, the team takes desperate measures to complete their mission.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT21ERO1mWqFFMNJjSo9EVndnTH5UbNRVWy0keNJTTqFVeNJjUp5UbalmWXVVP:1748545595:89.116.30.152:f24efae77fa0477b9110168fab9163471390fc0c78f40bafb4d198931d7b9381/./1080/index.m3u8", image: "https://f.woowoowoowoo.net/resize/300x200/bb/c3/bbc3a6ea1d28b368d8155ac26708ff43/bbc3a6ea1d28b368d8155ac26708ff43.jpg" },
+        { title: "The Compass Points Home", episode: 8, duration: "65m", description: "The explosive season finale with consequences that will change the team forever.", video: "https://cdn30091.lop3sdi5dq5.com:443/stream2/i-cdn-0/a5b5ae66248be0039515bda55fa1d488/MJTMsp1RshGTygnMNRUR2N2MSlnWXZEdMNDZzQWe5MDZzMmdZJTO1R2RWVHZDljekhkSsl1VwYnWtx2cihVT2lFVWlWTHZlaNpmWs5UbKpmTHZVbPdVTw40VWxmTqVleOpGZq5kMKlWTqNWP:1748545630:89.116.30.152:271d24d94e41ef5d73909a39c966b19a99f85243e8ea0bce4ec7839064937585/./1080/index.m3u8", image: "https://resizing.flixster.com/4HnNwmDcl6IPSvrEZRgJfeB3nis=/270x160/v2/https://statcdn.fandango.com/MPX/image/NBCU_Fandango/89/886/thumb_2F508CE6-EF23-49C3-8D79-00F619D189EC.jpg" }
       ]
     };
 
     function loadSeason(season, button) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      if (button) button.classList.add('active');
+      // Update active season button
+      document.querySelectorAll('.season-btn').forEach(btn => {
+        btn.classList.remove('active', 'bg-primary', 'bg-opacity-20', 'border-primary');
+        btn.classList.add('bg-gray-700', 'hover:bg-gray-600');
+      });
+      
+      if (button) {
+        button.classList.add('active', 'bg-primary', 'bg-opacity-20', 'border-primary');
+        button.classList.remove('bg-gray-700', 'hover:bg-gray-600');
+      }
+      
+      // Load episodes
       const grid = document.getElementById('episode-grid');
       grid.innerHTML = '';
 
       episodes[season].forEach(ep => {
         const card = document.createElement('div');
-        card.className = 'bg-gray-800 rounded shadow-lg overflow-hidden transition transform hover:scale-105';
+        card.className = 'episode-card bg-light rounded-xl overflow-hidden shadow-lg relative';
         card.innerHTML = `
-          <img src="${ep.image}" alt="${ep.title}" class="w-full h-48 object-cover">
-          <div class="p-4">
-            <h2 class="text-lg font-semibold mb-2">${ep.title}</h2>
-            <a href="player.html?video=${encodeURIComponent(ep.video)}" class="block bg-blue-600 hover:bg-blue-700 text-center px-4 py-2 rounded text-white">Watch</a>
+          <div class="relative">
+            <img src="${ep.image}" alt="${ep.title}" class="w-full h-56 object-cover">
+            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center play-icon">
+              <div class="bg-primary bg-opacity-90 rounded-full p-4 cursor-pointer transform hover:scale-110 transition">
+                <i class="fas fa-play text-xl"></i>
+              </div>
+            </div>
+            <div class="absolute top-3 right-3 bg-black bg-opacity-70 px-2 py-1 rounded text-sm">
+              ${ep.duration}
+            </div>
+          </div>
+          <div class="p-5">
+            <div class="text-primary font-semibold mb-1">Episode ${ep.episode}</div>
+            <h3 class="text-xl font-bold mb-2">${ep.title}</h3>
+            <p class="text-gray-300 text-sm mb-4 line-clamp-2">${ep.description}</p>
+            <a href="player.html?video=${encodeURIComponent(ep.video)}&title=${encodeURIComponent(ep.title)}" 
+              class="w-full bg-primary hover:bg-purple-800 text-center px-4 py-3 rounded-lg font-medium block">
+              Watch Now
+            </a>
           </div>
         `;
         grid.appendChild(card);
       });
     }
 
-    loadSeason('season1');
+    // Load first season by default
+    window.onload = function() {
+      loadSeason('season1');
+    };
   </script>
 </body>
 </html>
