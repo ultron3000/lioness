@@ -75,41 +75,59 @@
 <body>
 
 <!-- Showcase Header -->
-<div class="showcase-header">
-  <video class="showcase-video" autoplay muted loop playsinline poster="">
+<div class="relative w-full overflow-hidden rounded-lg shadow-lg">
+  <!-- Background Video -->
+  <video 
+    class="w-full h-[60vh] sm:h-[70vh] object-cover" 
+    autoplay 
+    muted 
+    loop 
+    playsinline
+  >
     <source src="https://imdb-video.media-imdb.com/vi1599587865/1434659607842-pgv4ql-1726755692704.mp4?Expires=1762060932&Signature=Tdi7IVYZIAMIFyZUEGdfy3Hi7N2a4xb0txFMgK5c0wkjY19uuvOet8PgU5Xa8BgWWfumxQWu~YML61UhP35kmijmWSm-cSSEfXXBqsCk51P9oRETFBFkfcvUAQJULBVne5gJrna4FLYblLwdCr2ZOxSHhRWyCx0RsmLXba~k9JhJMXRSkcpLM8JJflfJtkbvfLhomRG9FIWjn2JUQpvy6XiccbNaIUv~3FHXteWLWAz7BXRBO8ChSocw4h6-TXx1v9dOowilp5h1EbxGRTJ654xmqcR3FXMTqaIoop2PYCNodoO~8hTdxLd4b3LnoU0h6u4cO8QksMBgXWjJjEN~8w__&Key-Pair-Id=APKAIFLZBVQZ24NQH3KA" type="video/mp4">
   </video>
-  <div class="showcase-overlay">
-    <header class="bg-gradient-to-b from-black to-transparent py-4 px-6">
-      <div class="container mx-auto flex justify-between items-center">
+
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col">
+    
+    <!-- Header -->
+    <header class="bg-gradient-to-b from-black/80 to-transparent py-3 px-4 sm:px-6">
+      <div class="flex justify-between items-center">
         <div class="flex items-center space-x-2">
-          <div class="w-10 h-10 bg-gradient-to-r from-[#ff2d75] to-[#7e5bff] rounded-full flex items-center justify-center">
-            <i class="fas fa-play text-white"></i>
+          <div class="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-r from-[#ff2d75] to-[#7e5bff] rounded-full flex items-center justify-center">
+            <i class="fas fa-play text-white text-sm sm:text-base"></i>
           </div>
-          <h1 class="text-xl font-bold apple-logo">Lioness</h1>
+          <h1 class="text-lg sm:text-xl font-bold text-white">Lioness</h1>
         </div>
-        <button id="open-menu" class="md:hidden text-2xl text-white">
+        <button id="open-menu" class="md:hidden text-xl sm:text-2xl text-white">
           <i class="fas fa-bars"></i>
         </button>
       </div>
     </header>
 
-    <div class="container mx-auto px-4 flex-1 flex items-center showcase-content">
-      <div class="max-w-4xl">
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold mb-4 gradient-text">Special Ops: Lioness</h1>
-        <div class="flex items-center space-x-2 sm:space-x-4 mb-6 flex-wrap">
-          <span class="bg-gradient-to-r from-[#ff2d75] to-[#7e5bff] text-white px-3 py-1 rounded-full text-xs sm:text-sm font-semibold mb-2 sm:mb-0">Seasons 1 & 2</span>
-          <span class="text-gray-400 text-xs sm:text-sm">2024</span>
-          <span class="text-gray-400 hidden sm:block">•</span>
-          <span class="text-gray-400 text-xs sm:text-sm">16 Episodes</span>
+    <!-- Content -->
+    <div class="flex-1 flex items-end sm:items-center px-4 sm:px-6 pb-6 sm:pb-10">
+      <div class="max-w-2xl sm:max-w-3xl">
+        <h1 class="text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 bg-clip-text text-transparent bg-gradient-to-r from-[#ff2d75] to-[#7e5bff]">
+          Special Ops: Lioness
+        </h1>
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <span class="bg-gradient-to-r from-[#ff2d75] to-[#7e5bff] text-white px-3 py-1 rounded-full text-xs sm:text-sm font-semibold">
+            Seasons 1 & 2
+          </span>
+          <span class="text-gray-300 text-xs sm:text-sm">2024</span>
+          <span class="hidden sm:inline text-gray-400">•</span>
+          <span class="text-gray-300 text-xs sm:text-sm">16 Episodes</span>
         </div>
-        <p class="text-base sm:text-lg text-gray-300 mb-6">
+        <p class="text-sm sm:text-lg text-gray-300 leading-relaxed">
           CIA operative Joe attempts to balance her personal and professional lives as the tip of the spear in the agency's war on terror.
         </p>
       </div>
     </div>
+
   </div>
 </div>
+
 
 <!-- Episodes Section -->
 <main class="container mx-auto px-4 py-12 sm:py-16">
